@@ -1,42 +1,23 @@
 `timescale 1ns / 1ps
 //////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date: 16.03.2025 00:04:18
-// Design Name: 
-// Module Name: axi_top
-// Project Name: 
-// Target Devices: 
-// Tool Versions: 
-// Description: 
-// 
-// Dependencies: 
-// 
-// Revision:
-// Revision 0.01 - File Created
-// Additional Comments:
-// 
+// Fixed AXI Top Module - Corrected parameter widths
 //////////////////////////////////////////////////////////////////////////////////
 
-
-module axi_top#( parameter DATA_WIDTH   = 32,
-                parameter ADDR_WIDTH   = 7)(
-
+module axi_top #(
+  parameter DATA_WIDTH = 32,
+  parameter ADDR_WIDTH = 6
+)(
   // Global signals
-  input  wire           ACLK,
-  input  wire           ARESET_N,
+  input  wire                       ACLK,
+  input  wire                       ARESET_N,
   // External master control signals
-  input  wire           write_request,
-  input  wire           read_request,
-  input  wire [ADDR_WIDTH:0]    ext_waddr,
-  input  wire [ADDR_WIDTH:0]    ext_raddr,
-  input  wire [DATA_WIDTH:0]    ext_wdata,
-  output wire [DATA_WIDTH:0]    ext_rdata
+  input  wire                       write_request,
+  input  wire                       read_request,
+  input  wire [ADDR_WIDTH-1:0]      ext_waddr,      // FIXED: Was [ADDR_WIDTH:0]
+  input  wire [ADDR_WIDTH-1:0]      ext_raddr,      // FIXED: Was [ADDR_WIDTH:0]
+  input  wire [DATA_WIDTH-1:0]      ext_wdata,      // FIXED: Was [DATA_WIDTH:0]
+  output wire [DATA_WIDTH-1:0]      ext_rdata       // FIXED: Was [DATA_WIDTH:0]
 );
-
-  // Parameter declarations
- 
 
   // AXI channel interconnect signals
   // Write Address Channel
@@ -100,7 +81,7 @@ module axi_top#( parameter DATA_WIDTH   = 32,
   // Instantiate the AXI4-Lite Slave
   axi4lite_slave #(
     .DATA_WIDTH(DATA_WIDTH),
-    .ADDR_WIDTH(ADDR_WIDTH) // Override default if needed
+    .ADDR_WIDTH(ADDR_WIDTH)
   ) slave_inst (
     .s_axi_aresetn(ARESET_N),
     .s_axi_aclk   (ACLK),
