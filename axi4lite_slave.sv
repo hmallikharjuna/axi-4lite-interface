@@ -260,11 +260,13 @@ end
 //read address channel output logic
 
 always_ff @(posedge s_axi_aclk or negedge s_axi_aresetn) begin
-        if (!s_axi_aresetn)
-            s_axi_arready <= 1'b0;
-        else
-            s_axi_arready <= !s_axi_arready && s_axi_arvalid;
-    end
+    if (!s_axi_aresetn)
+        s_axi_arready <= 1'b0;
+    else if (s_axi_arvalid && !s_axi_arready)
+        s_axi_arready <= 1'b1;
+    else
+        s_axi_arready <= 1'b0;
+end
 
 //read data channel
 
