@@ -228,7 +228,7 @@ module axi4lite_master#(parameter data_width = 32, address_width=6)(
    begin
    if (!ARESET_N)  
    WDATA<='b0;
-   else if (WREADY)
+  else if (write_request)
    WDATA<=ext_wdata;
    end
    
